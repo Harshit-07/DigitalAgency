@@ -1,18 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { queryDescription } from "../constants/descriptions";
+import { useDispatch, useSelector } from "react-redux";
+import { InitialState } from "../interfaces/Store";
 
 function CustomRouter() {
-  const [post, setPost] = useState(1);
+  const postSelector = useSelector((state: InitialState) => state.post);
+  const cachedIdSelector = useSelector((state: InitialState) => state.cachedId);
+  const dispatch = useDispatch();
+  const [post, setPost] = useState(cachedIdSelector);
 
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, error, data, isSuccess } = useQuery({
     queryKey: ["repoData", post],
     queryFn: () =>
       fetch(`https://jsonplaceholder.typicode.com/posts/${post}`).then((res) =>
         res.json()
       ),
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch({ type: "SETPOST", payload: data });
+    }
+  }, [data]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -22,17 +33,24 @@ function CustomRouter() {
     return <div>An error has occurred: {error.message}</div>;
   }
 
+  const dispatchCachedId = (value: number) => {
+    dispatch({ type: "SETCACHEDID", payload: value });
+  };
+
   const handleAddClick = () => {
     if (post < 1) {
       setPost(1);
+      dispatchCachedId(1);
     } else {
       setPost(post + 1);
+      dispatchCachedId(post + 1);
     }
   };
 
   const handleSubtractClick = () => {
     if (post > 1) {
       setPost(post - 1);
+      dispatchCachedId(post - 1);
     }
   };
 
@@ -45,9 +63,9 @@ function CustomRouter() {
       </Link>
       <div className="ml-3 pt-5">
         <h1 className="text-2xl text-start font-bold">Random API Response:-</h1>
-        <h1 className="text-lg font-semibold">id: {data.id}</h1>
-        <h1 className="text-lg font-semibold">title: {data.title}.</h1>
-        <h1 className="text-lg font-semibold">body: {data.body}.</h1>
+        <h1 className="text-lg font-semibold">id: {postSelector?.id}</h1>
+        <h1 className="text-lg font-semibold">title: {postSelector?.title}.</h1>
+        <h1 className="text-lg font-semibold">body: {postSelector?.body}.</h1>
       </div>
       <button
         className=" bg-primary hover:bg-primary_hover text-white rounded-lg px-6 py-2.5 mt-14 ml-3 mr-3 text-sm "
