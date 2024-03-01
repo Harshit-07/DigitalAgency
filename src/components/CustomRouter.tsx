@@ -23,6 +23,7 @@ function CustomRouter() {
     if (isSuccess) {
       dispatch({ type: "SETPOST", payload: data });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (isLoading) {
