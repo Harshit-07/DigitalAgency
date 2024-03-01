@@ -1,4 +1,5 @@
-import { HashLink as Link } from "react-router-hash-link";
+import { HashLink } from "react-router-hash-link";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -8,19 +9,24 @@ function Header() {
         <h1 className="text-xl leading-6 font-bold">Digital agency</h1>
       </div>
       <div className="flex items-center justify-end space-x-4">
-        <Link smooth to="#about">
+        <HashLink smooth to="#about">
           <button className="hover:text-gray-500 rounded px-3 py-2">
             About
           </button>
-        </Link>
-        <Link smooth to="#service">
+        </HashLink>
+        <HashLink smooth to="#service">
           <button className="hover:text-gray-500 rounded px-3 py-2">
             Services
           </button>
-        </Link>
-        <Link smooth to="#blog">
+        </HashLink>
+        <HashLink smooth to="#blog">
           <button className="hover:text-gray-500 rounded px-3 py-2">
             Blogs
+          </button>
+        </HashLink>
+        <Link to="/queryroute">
+          <button className="hover:text-gray-500 rounded px-3 py-2">
+            API Route
           </button>
         </Link>
         <button className="font-sans bg-primary hover:bg-primary_hover text-white rounded-lg px-6 py-2.5 text-sm">

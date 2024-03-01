@@ -15,3 +15,8 @@ export const analyticsDescription = `“The results have been incredible. With P
   have been incredible.`;
 
 export const designation = `David Calathan - Director of Design Operations, New York`;
+
+export const queryDescription = `Note: The ID count is cached using React Query. When you increase or
+decrease the ID, the results are immediately available from the cache.
+This means that if you return to the same ID, the data is retrieved
+instantly without any loading`;
